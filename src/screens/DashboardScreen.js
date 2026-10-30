@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { api } from "../api/client";
+import { esEstadiaPorHoras, textoHorario } from "../utils/estadia";
 
 const COLORES_ESTADO = {
   LIBRE: "#22c55e",
@@ -55,9 +56,13 @@ function TarjetaHabitacion({ habitacion, onEditar }) {
       {habitacion.reserva && (
         <View style={styles.infoReserva}>
           <Text style={styles.cliente}>{habitacion.reserva.cliente}</Text>
-          <Text style={styles.detalle}>
-            Sale: {formatearFechaCorta(habitacion.reserva.fechaSalida)}
-          </Text>
+          {esEstadiaPorHoras(habitacion.reserva) ? (
+            <Text style={styles.horario}>⏱ {textoHorario(habitacion.reserva)}</Text>
+          ) : (
+            <Text style={styles.detalle}>
+              Sale: {formatearFechaCorta(habitacion.reserva.fechaSalida)}
+            </Text>
+          )}
           <Text style={styles.detalle}>
             {habitacion.reserva.metodoPago === "EFECTIVO"
               ? "Paga en efectivo"
@@ -301,6 +306,7 @@ const styles = StyleSheet.create({
   },
   cliente: { fontWeight: "600", color: "#334155" },
   detalle: { color: "#64748b", fontSize: 12, marginTop: 2 },
+  horario: { color: "#b45309", fontSize: 13, fontWeight: "700", marginTop: 2 },
   botonEditar: {
     alignSelf: "flex-start",
     backgroundColor: "#ede9fe",

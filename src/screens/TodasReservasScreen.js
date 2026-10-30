@@ -10,6 +10,7 @@ import {
   View,
 } from "react-native";
 import { api } from "../api/client";
+import { esEstadiaPorHoras, formatearHora } from "../utils/estadia";
 
 const ESTADOS = {
   PENDIENTE_PAGO: ["Pendiente de pago", "#d97706"],
@@ -100,6 +101,7 @@ export default function TodasReservasScreen() {
       {filtradas.length === 0 && <Text style={styles.vacio}>No se encontraron reservaciones.</Text>}
       {filtradas.map((reserva) => {
         const [estadoTexto, color] = ESTADOS[reserva.estado] || [reserva.estado, "#64748b"];
+        const porHoras = esEstadiaPorHoras(reserva);
         return (
           <View key={reserva.id} style={[styles.tarjeta, { borderLeftColor: color }]}>
             <View style={styles.filaSuperior}>
@@ -122,8 +124,18 @@ export default function TodasReservasScreen() {
               </View>
               <View style={styles.datoFila}>
                 <Text style={styles.datoEtiqueta}>Salida</Text>
-                <Text style={styles.datoValor}>{fechaSalida(reserva.fechaSalida)}</Text>
+                <Text style={styles.datoValor}>
+                  {porHoras
+                    ? `${fechaSalida(reserva.fechaSalida)}, ${formatearHora(reserva.fechaSalida)}`
+                    : fechaSalida(reserva.fechaSalida)}
+                </Text>
               </View>
+              {porHoras && (
+                <View style={styles.datoFila}>
+                  <Text style={styles.datoEtiqueta}>Tipo</Text>
+                  <Text style={styles.datoValor}>⏱ Por 3 horas</Text>
+                </View>
+              )}
             </View>
             <View style={styles.pieTarjeta}>
               <Text style={styles.precio}>L {Number(reserva.precioTotal).toFixed(2)}</Text>
