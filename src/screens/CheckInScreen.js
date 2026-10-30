@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { api } from "../api/client";
+import { esEstadiaPorHoras, textoHorario } from "../utils/estadia";
 
 const METODOS_PAGO = [
   { valor: "efectivo", etiqueta: "Efectivo" },
@@ -137,6 +138,9 @@ export default function CheckInScreen() {
               <Text style={styles.habitacion}>Hab. {item.habitacion.numero}</Text>
               <Text style={styles.cliente}>{item.cliente.nombre}</Text>
               <Text style={styles.detalle}>Código: {item.codigo}</Text>
+              {esEstadiaPorHoras(item) && (
+                <Text style={styles.horario}>⏱ {textoHorario(item)}</Text>
+              )}
               <Text
                 style={[
                   styles.estadoPago,
@@ -271,6 +275,7 @@ const styles = StyleSheet.create({
   habitacion: { fontSize: 16, fontWeight: "700", color: "#1e293b" },
   cliente: { fontSize: 15, color: "#334155", marginTop: 2 },
   detalle: { fontSize: 12, color: "#94a3b8", marginTop: 2 },
+  horario: { fontSize: 13, color: "#b45309", fontWeight: "700", marginTop: 4 },
   estadoPago: { fontSize: 13, fontWeight: "700", marginTop: 6 },
   boton: {
     marginTop: 12,

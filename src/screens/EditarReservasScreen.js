@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import { api } from "../api/client";
+import { esEstadiaPorHoras, textoHorario } from "../utils/estadia";
 
 const TEXTO_ESTADO = {
   PENDIENTE_PAGO: "Pendiente de pago",
@@ -156,6 +157,9 @@ export default function EditarReservasScreen({ route }) {
         <TouchableOpacity onPress={volver}><Text style={styles.atras}>‹ Volver</Text></TouchableOpacity>
         <Text style={styles.encabezado}>Hab. {seleccionada.habitacionActual} · {seleccionada.codigo}</Text>
         <Text style={styles.fechas}>{fecha(seleccionada.fechaEntrada)} → {fecha(seleccionada.fechaSalida)}</Text>
+        {esEstadiaPorHoras(seleccionada) && (
+          <Text style={styles.horario}>⏱ {textoHorario(seleccionada)}</Text>
+        )}
 
         <Text style={styles.etiqueta}>Nombre del cliente</Text>
         <TextInput style={styles.input} value={nombre} onChangeText={setNombre} />
@@ -208,6 +212,9 @@ export default function EditarReservasScreen({ route }) {
             <Text style={styles.nombre}>{reserva.cliente}</Text>
             <Text style={styles.detalle}>{reserva.codigo} · {TEXTO_ESTADO[reserva.estado] || reserva.estado}</Text>
             <Text style={styles.detalle}>{fecha(reserva.fechaEntrada)} → {fecha(reserva.fechaSalida)} · L {Number(reserva.precioTotal).toFixed(2)}</Text>
+            {esEstadiaPorHoras(reserva) && (
+              <Text style={styles.horario}>⏱ {textoHorario(reserva)}</Text>
+            )}
           </View>
           <Text style={styles.flecha}>›</Text>
         </TouchableOpacity>
@@ -231,6 +238,7 @@ const styles = StyleSheet.create({
   atras: { color: "#2563eb", fontWeight: "600", marginBottom: 14 },
   encabezado: { fontSize: 20, fontWeight: "800", color: "#1e293b" },
   fechas: { color: "#64748b", marginTop: 4 },
+  horario: { fontSize: 13, color: "#b45309", fontWeight: "700", marginTop: 3 },
   etiqueta: { fontSize: 13, fontWeight: "600", color: "#475569", marginTop: 16, marginBottom: 6 },
   input: { backgroundColor: "#fff", borderWidth: 1, borderColor: "#cbd5e1", borderRadius: 9, padding: 11, fontSize: 15 },
   guardar: { backgroundColor: "#7c3aed", borderRadius: 9, padding: 14, alignItems: "center", marginTop: 22 },

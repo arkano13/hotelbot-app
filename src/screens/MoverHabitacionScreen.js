@@ -10,6 +10,7 @@ import {
   RefreshControl,
 } from "react-native";
 import { api } from "../api/client";
+import { esEstadiaPorHoras, textoHorario } from "../utils/estadia";
 
 const COLOR_ESTADO = {
   PENDIENTE_PAGO: "#f59e0b",
@@ -142,6 +143,9 @@ export default function MoverHabitacionScreen() {
           <Text style={styles.subFechas}>
             {formatearFecha(reservaSeleccionada.fechaEntrada)} — {formatearFecha(reservaSeleccionada.fechaSalida)}
           </Text>
+          {esEstadiaPorHoras(reservaSeleccionada) && (
+            <Text style={styles.horario}>⏱ {textoHorario(reservaSeleccionada)}</Text>
+          )}
         </View>
 
         <ScrollView contentContainerStyle={styles.contenidoPaso2}>
@@ -218,6 +222,9 @@ export default function MoverHabitacionScreen() {
                 <Text style={styles.detalle}>
                   {formatearFecha(reserva.fechaEntrada)} → {formatearFecha(reserva.fechaSalida)}
                 </Text>
+                {esEstadiaPorHoras(reserva) && (
+                  <Text style={styles.horario}>⏱ {textoHorario(reserva)}</Text>
+                )}
                 <View style={[styles.badgeEstado, { backgroundColor: color }]}>
                   <Text style={styles.badgeEstadoTexto}>{TEXTO_ESTADO[reserva.estado] || reserva.estado}</Text>
                 </View>
@@ -268,6 +275,7 @@ const styles = StyleSheet.create({
   infoTarjeta: { flex: 1 },
   cliente: { fontSize: 16, fontWeight: "700", color: "#1e293b" },
   detalle: { fontSize: 13, color: "#64748b", marginTop: 2 },
+  horario: { fontSize: 13, color: "#b45309", fontWeight: "700", marginTop: 3 },
   badgeEstado: {
     alignSelf: "flex-start",
     borderRadius: 999,
