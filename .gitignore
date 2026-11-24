@@ -41,3 +41,6 @@ app-example
 # generated native folders
 /ios
 /android
+
+# Clave de la API (nunca subir)
+.env

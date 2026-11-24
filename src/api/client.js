@@ -1,5 +1,11 @@
 export const API_URL = "https://hotelbot-production-1991.up.railway.app";
-export const API_KEY = "d59900e526063490a7247a56106895cdb11c5b434fac077d75c8e2cacbc4b090";
+// La clave NO va en el código (el repositorio es público). Se toma de
+// EXPO_PUBLIC_API_KEY: archivo .env local o variable de entorno de EAS.
+export const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
+
+if (!API_KEY) {
+  console.warn("Falta EXPO_PUBLIC_API_KEY: la app no podrá conectarse al servidor.");
+}
 
 async function llamarApi(ruta, opciones = {}) {
   const respuesta = await fetch(`${API_URL}${ruta}`, {
